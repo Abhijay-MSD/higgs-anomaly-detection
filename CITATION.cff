@@ -7,6 +7,7 @@ authors:
     given-names: "Abhijay"
 version: "v1-results"
 date-released: "2026-10-12"
+doi: "10.5281/zenodo.23325916"
 license: MIT
 repository-code: "https://github.com/Abhijay-MSD/higgs-anomaly-detection"
 abstract: "Code and results for testing whether PCA, autoencoder and variational autoencoder reconstruction error, trained on simulated background events only, can flag an unseen proxy signal in the ATLAS Higgs Boson Machine Learning Challenge 2014 dataset, plus a synthetic-shift study and latent-space analysis."

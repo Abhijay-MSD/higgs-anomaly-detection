@@ -65,7 +65,13 @@ Signal events are never used to train, validate, early-stop, scale or tune any m
 
 Repository: https://github.com/Abhijay-MSD/higgs-anomaly-detection
 
-Please cite this software through its Zenodo DOI (see `CITATION.cff`) and cite the dataset:
+Archived release (DOI): https://doi.org/10.5281/zenodo.23325916
+
+Please cite this software as:
+
+> Arun, A. (2026). Evaluating Representation Learning for Model-Independent Anomaly Detection in High-Energy Particle Collisions (v1-results) [Software]. Zenodo. https://doi.org/10.5281/zenodo.23325916
+
+and cite the dataset:
 
 > ATLAS collaboration (2014). Dataset from the ATLAS Higgs Boson Machine Learning Challenge 2014. CERN Open Data Portal. DOI:10.7483/OPENDATA.ATLAS.ZBP2.M5T8
 
