@@ -1,0 +1,39 @@
+shape: (818238, 35)
+
+labels (s = signal, b = background):
+Label
+b    538678
+s    279560
+Name: count, dtype: int64
+
+number of features: 30
+
+fraction of -999 (undefined) values per feature:
+PRI_jet_subleading_phi    0.709149
+PRI_jet_subleading_eta    0.709149
+DER_deltaeta_jet_jet      0.709149
+DER_mass_jet_jet          0.709149
+DER_prodeta_jet_jet       0.709149
+PRI_jet_subleading_pt     0.709149
+DER_lep_eta_centrality    0.709149
+PRI_jet_leading_phi       0.400093
+PRI_jet_leading_pt        0.400093
+PRI_jet_leading_eta       0.400093
+DER_mass_MMC              0.152281
+dtype: float64
+
+jet counts:
+PRI_jet_num
+0    327371
+1    252882
+2    165027
+3     72958
+Name: count, dtype: int64
+
+KaggleSet values:
+KaggleSet
+v    450000
+t    250000
+b    100000
+u     18238
+Name: count, dtype: int64
