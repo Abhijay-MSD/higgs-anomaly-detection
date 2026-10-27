@@ -52,11 +52,17 @@ for sc in ("mahalanobis", "gmm_nll", "neg_elbo"):
         if mod not in m.index.get_level_values(0):
             continue
         sub = m.loc[mod]
+        if sc == "neg_elbo":   # report every latent size, as quoted in the text
+            add("", f"{LAB[sc]}: {NAME[mod]}, all $k$", rng3(sub.raw_auc), rng3(sub.cor_auc), rngp(sub.cor_eff))
+            first = False
+            continue
         k = sub.cor_auc.idxmax()
         runs = E[(E.score == sc) & (E.model == mod) & (E.latent == k)]
         if mod == "pca":
-            add("Latent-code score" if first else "", f"{LAB[sc]}: PCA, {k}", f3(runs.raw_auc.iloc[0]),
-                f3(runs.cor_auc.iloc[0]), pc(runs.cor_eff.iloc[0]))
+            r = runs.iloc[0]
+            add("Latent-code score" if first else "", f"{LAB[sc]}: PCA, {k}", f3(r.raw_auc),
+                f"{f3(r.cor_auc)} ({f3(r.cor_auc_lo)}--{f3(r.cor_auc_hi)})",
+                f"{pc(r.cor_eff)} ({pc(r.cor_eff_lo)}--{pc(r.cor_eff_hi)})")
         else:
             add("Latent-code score" if first else "", f"{LAB[sc]}: {NAME[mod]}, {k}", f3(runs.raw_auc.mean()),
                 ms(runs.cor_auc), ms(runs.cor_eff, True))
@@ -90,7 +96,7 @@ checks = r"""\begin{table}[tbp]
 """ + "\n".join(rows) + r"""
     \bottomrule
   \end{tabular}
-  \par\vspace{3pt}{\footnotesize\raggedright\textit{Note.} Evaluated on \texttt{sig\_eval} except the confirmation rows, which use \texttt{sig\_clf} (95\% bootstrap intervals in brackets). Corrected values use the percentile within jet count; eff., signal efficiency at a 1\% false-positive rate (chance 1.00\%). Latent-code rows show the latent size with the highest corrected AUC for each score and model. Ranges are over configuration means; $\pm$ values are standard deviations over seeds. NLL, negative log-likelihood; ELBO, evidence lower bound. Computed with Python 3.11, PyTorch 2.14.1 and scikit-learn 1.9.1.\par}
+  \par\vspace{3pt}{\footnotesize\raggedright\textit{Note.} Evaluated on \texttt{sig\_eval} except the confirmation rows, which use \texttt{sig\_clf}; 95\% bootstrap intervals for single PCA fits are in brackets. Corrected values use the percentile within jet count; eff., signal efficiency at a 1\% false-positive rate (chance 1.00\%). Latent-code rows show the latent size with the highest corrected AUC for each score and model (negative ELBO: range over all latent sizes); values for every latent size are in \texttt{results/revision/E\_latent\_scores.csv} in the repository. Ranges are over configuration means; $\pm$ values are standard deviations over seeds. NLL, negative log-likelihood; ELBO, evidence lower bound. Computed with Python 3.11, PyTorch 2.14.1 and scikit-learn 1.9.1.\par}
 \end{table}
 """
 

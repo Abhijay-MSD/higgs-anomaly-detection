@@ -7,7 +7,7 @@
   D. Simple baselines: jet count as the score and an isolation forest (the k-nearest-
      neighbour baseline is in baseline_knn.py).
   E. Unsupervised scores on the latent codes: Mahalanobis distance, Gaussian-mixture
-     negative log-likelihood, and (VAE) the negative ELBO.
+     negative log-likelihood, and (VAE) the negative ELBO. PCA rows get bootstrap intervals.
   F. Below-chance check: are signal events closer to the centre of the scaled feature
      space than background events with the same jet count?
   G. Masked score: reconstruction error averaged only over features that are defined for
@@ -45,6 +45,7 @@ SETS = {k: sp[k] for k in ("train", "val", "test", "sig_clf", "sig_eval")}
 defined = np.c_[~np.isnan(raw), np.zeros((len(raw), 3), bool)]   # indicators never count
 runs = pd.read_csv(R / "results.csv")
 rng = np.random.default_rng(0)
+rng_boot = np.random.default_rng(1)   # separate stream for the latent-score intervals
 
 
 # ---------------------------------------------------------------- helpers
@@ -67,28 +68,29 @@ def count_metrics(wb, ws):
     return auc, np.interp(0.01, fpr, tpr)
 
 
-def bootstrap(pb, ps, n=1000):
+def bootstrap(pb, ps, n=1000, r=None):
+    r = rng if r is None else r
     """Same multinomial bootstrap over score values as bootstrap_pca.py."""
     vals = np.unique(np.r_[pb, ps])
     cb = np.bincount(np.searchsorted(vals, pb), minlength=len(vals))
     cs = np.bincount(np.searchsorted(vals, ps), minlength=len(vals))
     qb, qs = cb / cb.sum(), cs / cs.sum()
-    draws = np.array([count_metrics(rng.multinomial(cb.sum(), qb),
-                                    rng.multinomial(cs.sum(), qs)) for _ in range(n)])
+    draws = np.array([count_metrics(r.multinomial(cb.sum(), qb),
+                                    r.multinomial(cs.sum(), qs)) for _ in range(n)])
     point = count_metrics(cb, cs)
     lo, hi = np.percentile(draws, [2.5, 97.5], axis=0)
     return {"auc": point[0], "auc_lo": lo[0], "auc_hi": hi[0],
             "eff": point[1], "eff_lo": lo[1], "eff_hi": hi[1]}
 
 
-def full_eval(scores, sig="sig_eval", boot=False):
+def full_eval(scores, sig="sig_eval", boot=False, r=None):
     """Raw and jet-corrected metrics for a dict of scores keyed by split name."""
     sb, ss, sv = scores["test"], scores[sig], scores["val"]
     raw_m = evaluate(sb, ss)
     pb, ps = pct_correct(sv, sb, ss, jet[SETS["val"]], jet[SETS["test"]], jet[SETS[sig]])
     row = {"raw_auc": raw_m["auc"], "raw_eff": raw_m["eff_at_fpr_0.01"]}
     if boot:
-        b = bootstrap(pb, ps)
+        b = bootstrap(pb, ps, r=r)
         row.update({f"cor_{k}": v for k, v in b.items()})
     else:
         c = evaluate(pb, ps)
@@ -154,7 +156,8 @@ for _, r in runs.iterrows():
     # E: latent-code scores, on sig_eval
     for sname, sc in (("mahalanobis", maha), ("gmm_nll", gmm_s), ("neg_elbo", elbo)):
         if sc:
-            rows_e.append({**base, "score": sname, **full_eval(sc)})
+            # PCA is a single fit, so its latent-score rows also get bootstrap intervals
+            rows_e.append({**base, "score": sname, **full_eval(sc, boot=(kind == "pca"), r=rng_boot)})
     # G: masked reconstruction error
     rows_g.append({**base, **full_eval(masked)})
     print("A/E/G done", kind, latent, seed, flush=True)

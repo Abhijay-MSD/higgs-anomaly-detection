@@ -66,7 +66,7 @@ def run_neural(kind, latent, seed):
         model, loss_fn = VAE(d, latent), make_vae_loss(BETA)
     t0 = time.time()
     model, hist = train(model, loss_fn, X_train, X_val,
-                        max_epochs=600, patience=15, verbose=False)
+                        max_epochs=300, patience=15, verbose=False)
     model.eval()
     s_bg, s_sig = model.score(X_test).numpy(), model.score(X_sig).numpy()
     res = evaluate(s_bg, s_sig)

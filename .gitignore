@@ -6,4 +6,6 @@ results/latents/
 results/*.pt
 __pycache__/
 .ipynb_checkpoints/
-.DS_StoreCLAUDE.md
+.DS_Store
+CLAUDE.md
+results/revision/runs_nojet/

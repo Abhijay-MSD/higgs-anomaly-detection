@@ -1,16 +1,16 @@
 cff-version: 1.2.0
 message: "If you use this code or its results, please cite it as below."
-title: "Evaluating Representation Learning for Model-Independent Anomaly Detection in High-Energy Particle Collisions"
+title: "A Jet-Multiplicity Confound in Reconstruction-Based Anomaly Detection: Evidence from a Higgs-to-Tau-Pair Proxy Signal"
 type: software
 authors:
   - family-names: "Arun"
     given-names: "Abhijay"
-version: "v1-results"
-date-released: "2026-10-12"
+version: "v2-revision"
+date-released: "2026-10-27"
 doi: "10.5281/zenodo.23325916"
 license: MIT
 repository-code: "https://github.com/Abhijay-MSD/higgs-anomaly-detection"
-abstract: "Code and results for testing whether PCA, autoencoder and variational autoencoder reconstruction error, trained on simulated background events only, can flag an unseen proxy signal in the ATLAS Higgs Boson Machine Learning Challenge 2014 dataset, plus a synthetic-shift study and latent-space analysis."
+abstract: "Code and results for testing whether PCA, autoencoder and variational autoencoder reconstruction error, trained on simulated background events only, can flag an unseen proxy signal in the ATLAS Higgs Boson Machine Learning Challenge 2014 dataset, with a jet-count control, baselines, latent-code scores, retraining without jet inputs, synthetic and energy-scale shifts, and latent-space analysis."
 keywords:
   - anomaly detection
   - autoencoder
