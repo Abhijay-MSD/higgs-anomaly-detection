@@ -78,11 +78,11 @@ Signal events are never used to train, validate, early-stop, scale or tune any m
 
 Repository: https://github.com/Abhijay-MSD/higgs-anomaly-detection
 
-Archived release (DOI): https://doi.org/10.5281/zenodo.23325916
+Archived release (DOI): https://doi.org/10.5281/zenodo.23685897
 
 Please cite this software as:
 
-> Arun, A. (2026). A Jet-Multiplicity Confound in Reconstruction-Based Anomaly Detection: Evidence from a Higgs-to-Tau-Pair Proxy Signal (v2-revision) [Software]. Zenodo. https://doi.org/10.5281/zenodo.23325916
+> Arun, A. (2026). A Jet-Multiplicity Confound in Reconstruction-Based Anomaly Detection: Evidence from a Higgs-to-Tau-Pair Proxy Signal (v2-revision) [Software]. Zenodo. https://doi.org/10.5281/zenodo.23685897
 
 and cite the dataset:
 
